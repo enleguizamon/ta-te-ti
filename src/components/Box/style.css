@@ -1,0 +1,11 @@
+.button {
+  height: 6rem;
+  width: 6rem;
+  margin: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+} 
+
+.button:focus {
+  outline: none;
+}

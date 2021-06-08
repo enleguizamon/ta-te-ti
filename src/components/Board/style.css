@@ -1,0 +1,9 @@
+.rowsContainer {
+  border: 1px solid red;
+  min-width: 350px;
+}
+
+.rowContainer {
+  border: 1px solid blue;
+  min-width: 350px;
+}

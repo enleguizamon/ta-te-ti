@@ -1,0 +1,6 @@
+.gameContainer {
+  border: 1px solid green;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
