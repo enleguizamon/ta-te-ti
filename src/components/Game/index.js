@@ -7,13 +7,16 @@ class Game extends React.Component {
     super(props);
 
     this.state = {
+      currentPlayer: "X"
     };
   }
+
+
 
   render() {
     return (
       <div className="gameContainer">
-        <Board />
+        <Board currentPlayer={this.state.currentPlayer} />
         <div className="title">
           <h4>Siguiente jugador: </h4>
         </div>

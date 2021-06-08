@@ -10,20 +10,25 @@ class Box extends React.Component {
       value: ""
     }
   }
-  
-  handleClick() {
-    if(this.state.value === "X") {
+
+  //el segundo argumento, se ejecuta después del setState para que sea sincrónico.
+  handleClick(currentPlayer) {
+    this.setState({value: currentPlayer}, () => {
+      this.props.handleCallback(this.state.value);
+    });
+    
+    /*if(this.state.value === "X") {
       this.setState({value: "O"})
   } else {
     this.setState({value: "X"})
-  }
+  }*/
 }
 
   render() {
-    const { id } = this.props;
+    const { id, currentPlayer } = this.props;
     return (
       <Button
-        onClick={() => this.handleClick()}
+        onClick={() => this.handleClick(currentPlayer)}
         variant="primary"
         size="lg"
         className="button"
