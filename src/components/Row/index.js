@@ -7,8 +7,8 @@ class Row extends React.Component {
     super(props);
   }
 
-  handleCallback(data) {
-    console.log(data);
+  handleCallback(lastPlayer) {
+    this.props.handleCallback(lastPlayer);
   }
 
   render() {
@@ -18,17 +18,17 @@ class Row extends React.Component {
         <Box
           id={fila * 3 + 0}
           currentPlayer={this.props.currentPlayer}
-          handleCallback={(data) => this.handleCallback(data)}
+          handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
         />
         <Box
           id={fila * 3 + 1}
           currentPlayer={this.props.currentPlayer}
-          handleCallback={(data) => this.handleCallback(data)}
+          handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
         />
         <Box
           id={fila * 3 + 2}
           currentPlayer={this.props.currentPlayer}
-          handleCallback={(data) => this.handleCallback(data)}
+          handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
         />
       </React.Fragment>
     );

@@ -7,18 +7,27 @@ class Game extends React.Component {
     super(props);
 
     this.state = {
-      currentPlayer: "X"
+      currentPlayer: "X",
     };
   }
 
-
+  handleCallback(lastPlayer) {
+    if(lastPlayer === "X") {
+      this.setState({currentPlayer: "O"})
+    } else {
+      this.setState({currentPlayer: "X"})
+    }
+  }
 
   render() {
     return (
       <div className="gameContainer">
-        <Board currentPlayer={this.state.currentPlayer} />
+        <Board
+          currentPlayer={this.state.currentPlayer}
+          handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
+        />
         <div className="title">
-          <h4>Siguiente jugador: </h4>
+          <h4>Siguiente jugador: {this.state.currentPlayer}</h4>
         </div>
       </div>
     );
