@@ -9,17 +9,22 @@ class Game extends React.Component {
 
     //El estado inicial tiene de atributos al jugador que tiene el turno, las jugadas, el tablero vacio y el ganador.
     this.state = {
+      //turno del jugador
       currentPlayer: "X",
-      plays: [],
+      //estado del tablero
       board: Array(9).fill(""),
+      //nombre del ganador X o O
       winner: "",
+      //flag para determinar si termino el juego
       gameIsEnded: false,
+      //historial de jugadas(array de boards)
+      history: []
     };
   }
 
   //Llega la jugada por Callback desde Board.
   handleCallback(move) {
-    const { plays, board, winner } = this.state;
+    const { plays, board, winner, history } = this.state;
     const lastPlayer = move.player; //jugador
     const lastValue = move.position; //posicion
 
@@ -28,8 +33,8 @@ class Game extends React.Component {
     //coloca en la posicion del tablero el value del jugador.
     newBoard[lastValue] = lastPlayer;
 
-    this.setState({ board: newBoard });
-    console.log(board);
+    //Actualiza el board y agrega el board al historial.
+    this.setState({ board: newBoard, history: [...history, newBoard] });
 
     //compara y setea ganador.
     this.calculateWinner(board, lastPlayer, winner);
@@ -42,11 +47,6 @@ class Game extends React.Component {
     } else {
       this.setState({ currentPlayer: "X" });
     }
-
-    //Se completa el array con las jugadas.
-    this.setState({
-      plays: [...plays, lastPlayer],
-    });
   }
 
   calculateWinner(board, lastPlayer, winner) {
@@ -88,6 +88,7 @@ class Game extends React.Component {
   }
 
   render() {
+    console.log(this.state.history)
     const { winner, gameIsEnded, currentPlayer } = this.state;
 
     //conditional rendering para mostrar siguiente jugador, ganador o empate.
@@ -110,7 +111,15 @@ class Game extends React.Component {
           handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
           gameIsEnded={gameIsEnded}
         />
+        <div className="aside">
         <div className="title">{message}</div>
+        <div className="historyContainer">
+        {this.state.history.map((element, i, arr) => {
+          return <Button variant="success"
+          size="sm" className="historyButton">#ir a jugada: {i}</Button>
+        })}
+        </div>
+        </div>
       </div>
     );
   }
