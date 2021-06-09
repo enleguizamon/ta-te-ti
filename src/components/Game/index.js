@@ -1,6 +1,7 @@
 import React from "react";
 import "./style.css";
 import Board from "../Board";
+import Button from "react-bootstrap/Button";
 
 class Game extends React.Component {
   constructor(props) {
@@ -81,6 +82,11 @@ class Game extends React.Component {
     }
   }
 
+  //Recarga la pagina con el boton comenzar nuevo juego.
+  refreshPage() {
+    window.location.reload();
+  }
+
   render() {
     const { winner, gameIsEnded, currentPlayer } = this.state;
 
@@ -97,6 +103,8 @@ class Game extends React.Component {
     //Se manda en currentPlayer a Board por props.
     return (
       <div className="gameContainer">
+        <Button onClick={this.refreshPage} variant="secondary"
+        size="sm" className="refreshButton">Comenzar nuevo juego</Button>
         <Board
           currentPlayer={currentPlayer}
           handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}

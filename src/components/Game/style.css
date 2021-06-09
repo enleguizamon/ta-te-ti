@@ -4,3 +4,11 @@
   justify-content: center;
   margin: 0 auto;
 }
+
+.title {
+  margin: 1rem;
+}
+.refreshButton {
+  height: 3rem;
+  margin: 1rem;
+}
