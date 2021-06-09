@@ -10,26 +10,26 @@ class Row extends React.Component {
 
   //Se manda en currentPlayer a Box.
   render() {
-    const { row, winner } = this.props;
+    const { row, gameIsEnded } = this.props;
     return (
       <React.Fragment>
         <Box
           boxNumber={row * 3 + 0}
           currentPlayer={this.props.currentPlayer}
           handleCallback={(move) => this.handleCallback(move)}
-          winner={winner}
+          gameIsEnded={gameIsEnded}
         />
         <Box
           boxNumber={row * 3 + 1}
           currentPlayer={this.props.currentPlayer}
           handleCallback={(move) => this.handleCallback(move)}
-          winner={winner}
+          gameIsEnded={gameIsEnded}
         />
         <Box
           boxNumber={row * 3 + 2}
           currentPlayer={this.props.currentPlayer}
           handleCallback={(move) => this.handleCallback(move)}
-          winner={winner}
+          gameIsEnded={gameIsEnded}
         />
       </React.Fragment>
     );

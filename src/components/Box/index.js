@@ -7,7 +7,7 @@ class Box extends React.Component {
     super(props);
 
     this.state = {
-      disable: false,
+      boxIsFilled: false,
       move: {
         player: "",
         position: null,
@@ -19,7 +19,7 @@ class Box extends React.Component {
   handleClick(currentPlayer, boxNumber) {
     this.setState(
       {
-        disable: true,
+        boxIsFilled: true,
         move: {
           player: currentPlayer,
           position: boxNumber,
@@ -31,22 +31,15 @@ class Box extends React.Component {
     );
   }
 
-  stopBoard() {
-    const { winner } = this.props;
-
-    if (winner != "") {
-      this.setState({disable: true})
-      console.log("llegué" + winner)
-  }
-}
   //Llega el valor del currentPlayer por props y lo renderizo en la casilla
   //creando un estado y modificandolo en el onClick.
   //Devuelvo la jugada por callback con el valor del jugador y el numero del casillero.
   render() {
-    const { boxNumber, currentPlayer, winner } = this.props;
+    const { boxNumber, currentPlayer, gameIsEnded } = this.props;
+   
     return (
       <Button
-        disabled={this.state.disable}
+        disabled={this.state.boxIsFilled || gameIsEnded}
         onClick={() => this.handleClick(currentPlayer, boxNumber)}
         variant="primary"
         size="lg"

@@ -13,8 +13,8 @@ class Board extends React.Component {
 
   //Se manda en currentPlayer a Row. 
   render() {
-    const { winner, currentPlayer } = this.props;
-    
+    const { gameIsEnded, currentPlayer } = this.props;
+
     return (
       <div className="rowsContainer">
         <div className="rowContainer">
@@ -22,7 +22,7 @@ class Board extends React.Component {
             row="0"
             currentPlayer={currentPlayer}
             handleCallback={(move) => this.handleCallback(move)}
-            winner={winner}
+            gameIsEnded={gameIsEnded}
           />
         </div>
         <div className="rowContainer">
@@ -30,6 +30,7 @@ class Board extends React.Component {
             row="1"
             currentPlayer={this.props.currentPlayer}
             handleCallback={(move) => this.handleCallback(move)}
+            gameIsEnded={gameIsEnded}
           />
         </div>
         <div className="rowContainer">
@@ -37,6 +38,7 @@ class Board extends React.Component {
             row="2"
             currentPlayer={this.props.currentPlayer}
             handleCallback={(move) => this.handleCallback(move)}
+            gameIsEnded={gameIsEnded}
           />
         </div>
       </div>

@@ -12,6 +12,7 @@ class Game extends React.Component {
       plays: [],
       board: Array(9).fill(''),
       winner: "",
+      gameIsEnded: false
     };
   }
 
@@ -30,28 +31,7 @@ class Game extends React.Component {
     console.log(board);
 
     //compara y setea ganador.
-    if (
-      (board[0] == "X" && board[1] == "X" && board[2] == "X") || //primera fila
-      (board[0] == "O" && board[1] == "O" && board[2] == "O") ||
-      (board[3] == "X" && board[4] == "X" && board[5] == "X") || //segunda fila
-      (board[3] == "O" && board[4] == "O" && board[5] == "O") ||
-      (board[6] == "X" && board[7] == "X" && board[8] == "X") || //tercera fila
-      (board[6] == "O" && board[7] == "O" && board[8] == "O") ||
-      (board[0] == "X" && board[3] == "X" && board[6] == "X") || //primera columna
-      (board[0] == "O" && board[3] == "O" && board[6] == "O") ||
-      (board[1] == "X" && board[4] == "X" && board[7] == "X") || //segunda columna
-      (board[1] == "O" && board[4] == "O" && board[7] == "O") ||
-      (board[2] == "X" && board[5] == "X" && board[8] == "X") || //tercera columna
-      (board[2] == "O" && board[5] == "O" && board[8] == "O") ||
-      (board[2] == "X" && board[4] == "X" && board[6] == "X") || //diagonal
-      (board[2] == "O" && board[4] == "O" && board[6] == "O") ||
-      (board[0] == "X" && board[4] == "X" && board[8] == "X") || //diagonal
-      (board[0] == "O" && board[4] == "O" && board[8] == "O")
-    ) {
-      this.setState({ winner: lastPlayer });
-      this.setState({ board: Array(9).fill(''), });
-      console.log(winner);
-    }
+    this.calculateWinner(board, lastPlayer, winner);
 
     //cambia el jugador.
     if (lastPlayer === "X") {
@@ -67,12 +47,34 @@ class Game extends React.Component {
   }
 
 
+  calculateWinner(board, lastPlayer, winner) {
+    if ((board[0] == "X" && board[1] == "X" && board[2] == "X") || //primera fila
+      (board[0] == "O" && board[1] == "O" && board[2] == "O") ||
+      (board[3] == "X" && board[4] == "X" && board[5] == "X") || //segunda fila
+      (board[3] == "O" && board[4] == "O" && board[5] == "O") ||
+      (board[6] == "X" && board[7] == "X" && board[8] == "X") || //tercera fila
+      (board[6] == "O" && board[7] == "O" && board[8] == "O") ||
+      (board[0] == "X" && board[3] == "X" && board[6] == "X") || //primera columna
+      (board[0] == "O" && board[3] == "O" && board[6] == "O") ||
+      (board[1] == "X" && board[4] == "X" && board[7] == "X") || //segunda columna
+      (board[1] == "O" && board[4] == "O" && board[7] == "O") ||
+      (board[2] == "X" && board[5] == "X" && board[8] == "X") || //tercera columna
+      (board[2] == "O" && board[5] == "O" && board[8] == "O") ||
+      (board[2] == "X" && board[4] == "X" && board[6] == "X") || //diagonal
+      (board[2] == "O" && board[4] == "O" && board[6] == "O") ||
+      (board[0] == "X" && board[4] == "X" && board[8] == "X") || //diagonal
+      (board[0] == "O" && board[4] == "O" && board[8] == "O")) {
+      this.setState({ winner: lastPlayer, gameIsEnded: true });
+      console.log(winner);
+    }
+  }
+
   render() {
-    const { winner, currentPlayer } = this.state;
+    const { winner, gameIsEnded, currentPlayer } = this.state;
 
     //conditional rendering para mostrar jugador o ganador.
     let shouldPlay;
-    if (winner != "") {
+    if (gameIsEnded) {
       shouldPlay = <h4>El ganador es: {winner}</h4>;
     } else {
       shouldPlay = <h4>Próximo jugador: {currentPlayer}</h4>;
@@ -84,7 +86,7 @@ class Game extends React.Component {
         <Board
           currentPlayer={currentPlayer}
           handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
-          winner={winner}
+          gameIsEnded={gameIsEnded}
         />
         <div className="title">{shouldPlay}</div>
       </div>
