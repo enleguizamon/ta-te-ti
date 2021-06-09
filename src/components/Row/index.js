@@ -3,32 +3,33 @@ import "./style.css";
 import Box from "../Box";
 
 class Row extends React.Component {
-  constructor(props) {
-    super(props);
+  //Llega la jugada por Callback desde Box.
+  handleCallback(move) {
+    this.props.handleCallback(move);
   }
 
-  handleCallback(lastPlayer) {
-    this.props.handleCallback(lastPlayer);
-  }
-
+  //Se manda en currentPlayer a Box.
   render() {
-    const { fila } = this.props;
+    const { row, winner } = this.props;
     return (
       <React.Fragment>
         <Box
-          id={fila * 3 + 0}
+          boxNumber={row * 3 + 0}
           currentPlayer={this.props.currentPlayer}
-          handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
+          handleCallback={(move) => this.handleCallback(move)}
+          winner={winner}
         />
         <Box
-          id={fila * 3 + 1}
+          boxNumber={row * 3 + 1}
           currentPlayer={this.props.currentPlayer}
-          handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
+          handleCallback={(move) => this.handleCallback(move)}
+          winner={winner}
         />
         <Box
-          id={fila * 3 + 2}
+          boxNumber={row * 3 + 2}
           currentPlayer={this.props.currentPlayer}
-          handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
+          handleCallback={(move) => this.handleCallback(move)}
+          winner={winner}
         />
       </React.Fragment>
     );

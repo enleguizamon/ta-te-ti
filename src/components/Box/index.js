@@ -7,32 +7,53 @@ class Box extends React.Component {
     super(props);
 
     this.state = {
-      value: ""
-    }
+      disable: false,
+      move: {
+        player: "",
+        position: null,
+      },
+    };
   }
 
-  //el segundo argumento, se ejecuta después del setState para que sea sincrónico.
-  handleClick(currentPlayer) {
-    this.setState({value: currentPlayer}, () => {
-      this.props.handleCallback(this.state.value);
-    });
-    
-    /*if(this.state.value === "X") {
-      this.setState({value: "O"})
-  } else {
-    this.setState({value: "X"})
-  }*/
-}
+  //el segundo argumento, se ejecuta despues del setState para que sea sincronico.
+  handleClick(currentPlayer, boxNumber) {
+    this.setState(
+      {
+        disable: true,
+        move: {
+          player: currentPlayer,
+          position: boxNumber,
+        },
+      },
+      () => {
+        this.props.handleCallback(this.state.move);
+      }
+    );
+  }
 
+  stopBoard() {
+    const { winner } = this.props;
+
+    if (winner != "") {
+      this.setState({disable: true})
+      console.log("llegué" + winner)
+  }
+}
+  //Llega el valor del currentPlayer por props y lo renderizo en la casilla
+  //creando un estado y modificandolo en el onClick.
+  //Devuelvo la jugada por callback con el valor del jugador y el numero del casillero.
   render() {
-    const { id, currentPlayer } = this.props;
+    const { boxNumber, currentPlayer, winner } = this.props;
     return (
       <Button
-        onClick={() => this.handleClick(currentPlayer)}
+        disabled={this.state.disable}
+        onClick={() => this.handleClick(currentPlayer, boxNumber)}
         variant="primary"
         size="lg"
         className="button"
-      >{this.state.value}</Button>
+      >
+        {this.state.move.player}
+      </Button>
     );
   }
 }

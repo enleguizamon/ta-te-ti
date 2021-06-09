@@ -3,32 +3,40 @@ import "./style.css";
 import Row from "../Row";
 
 class Board extends React.Component {
-  handleCallback(lastPlayer) {
-    this.props.handleCallback(lastPlayer);
+  constructor(props) {
+    super(props);
+  }
+  //Llega la jugada por Callback desde Row.
+  handleCallback(move) {
+    this.props.handleCallback(move);
   }
 
+  //Se manda en currentPlayer a Row. 
   render() {
+    const { winner, currentPlayer } = this.props;
+    
     return (
       <div className="rowsContainer">
         <div className="rowContainer">
           <Row
-            fila="0"
-            currentPlayer={this.props.currentPlayer}
-            handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
+            row="0"
+            currentPlayer={currentPlayer}
+            handleCallback={(move) => this.handleCallback(move)}
+            winner={winner}
           />
         </div>
         <div className="rowContainer">
           <Row
-            fila="1"
+            row="1"
             currentPlayer={this.props.currentPlayer}
-            handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
+            handleCallback={(move) => this.handleCallback(move)}
           />
         </div>
         <div className="rowContainer">
           <Row
-            fila="2"
+            row="2"
             currentPlayer={this.props.currentPlayer}
-            handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
+            handleCallback={(move) => this.handleCallback(move)}
           />
         </div>
       </div>
