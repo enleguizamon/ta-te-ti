@@ -10,9 +10,9 @@ class Game extends React.Component {
     this.state = {
       currentPlayer: "X",
       plays: [],
-      board: Array(9).fill(''),
+      board: Array(9).fill(""),
       winner: "",
-      gameIsEnded: false
+      gameIsEnded: false,
     };
   }
 
@@ -32,6 +32,8 @@ class Game extends React.Component {
 
     //compara y setea ganador.
     this.calculateWinner(board, lastPlayer, winner);
+    //si el tablero esta lleno determina empate.
+    this.checkTie();
 
     //cambia el jugador.
     if (lastPlayer === "X") {
@@ -46,9 +48,9 @@ class Game extends React.Component {
     });
   }
 
-
   calculateWinner(board, lastPlayer, winner) {
-    if ((board[0] == "X" && board[1] == "X" && board[2] == "X") || //primera fila
+    if (
+      (board[0] == "X" && board[1] == "X" && board[2] == "X") || //primera fila
       (board[0] == "O" && board[1] == "O" && board[2] == "O") ||
       (board[3] == "X" && board[4] == "X" && board[5] == "X") || //segunda fila
       (board[3] == "O" && board[4] == "O" && board[5] == "O") ||
@@ -63,21 +65,33 @@ class Game extends React.Component {
       (board[2] == "X" && board[4] == "X" && board[6] == "X") || //diagonal
       (board[2] == "O" && board[4] == "O" && board[6] == "O") ||
       (board[0] == "X" && board[4] == "X" && board[8] == "X") || //diagonal
-      (board[0] == "O" && board[4] == "O" && board[8] == "O")) {
+      (board[0] == "O" && board[4] == "O" && board[8] == "O")
+    ) {
+      //Si hubo ganador se setea el ganador y termina el juego.
       this.setState({ winner: lastPlayer, gameIsEnded: true });
-      console.log(winner);
+    }
+  }
+
+  checkTie() {
+    const { board, gameIsEnded } = this.state;
+
+    const boxHasValue = (currentValue) => currentValue != "";
+    if (board.every(boxHasValue) && !gameIsEnded) {
+      this.setState({ winner: "", gameIsEnded: true });
     }
   }
 
   render() {
     const { winner, gameIsEnded, currentPlayer } = this.state;
 
-    //conditional rendering para mostrar jugador o ganador.
-    let shouldPlay;
-    if (gameIsEnded) {
-      shouldPlay = <h4>El ganador es: {winner}</h4>;
+    //conditional rendering para mostrar siguiente jugador, ganador o empate.
+    let message;
+    if (gameIsEnded && winner == "") {
+      message = <h4>Empate</h4>;
+    } else if (gameIsEnded) {
+      message = <h4>El ganador es: {winner}</h4>;
     } else {
-      shouldPlay = <h4>Próximo jugador: {currentPlayer}</h4>;
+      message = <h4>Próximo jugador: {currentPlayer}</h4>;
     }
 
     //Se manda en currentPlayer a Board por props.
@@ -88,7 +102,7 @@ class Game extends React.Component {
           handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
           gameIsEnded={gameIsEnded}
         />
-        <div className="title">{shouldPlay}</div>
+        <div className="title">{message}</div>
       </div>
     );
   }
