@@ -1,12 +1,15 @@
 import React from "react";
 import "./style.css";
 import Button from "react-bootstrap/Button";
+import { Prev } from "react-bootstrap/esm/PageItem";
+import { alignPropType } from "react-bootstrap/esm/DropdownMenu";
 
 class Box extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      currentValue: this.props.currentBoard[this.props.boxNumber],
       boxIsFilled: false,
       move: {
         player: "",
@@ -19,6 +22,7 @@ class Box extends React.Component {
   handleClick(currentPlayer, boxNumber) {
     this.setState(
       {
+        currentValue: currentPlayer,
         boxIsFilled: true,
         move: {
           player: currentPlayer,
@@ -31,21 +35,36 @@ class Box extends React.Component {
     );
   }
 
+  // componentDidMount() {
+  //   const { currentBoard, boxNumber } = this.props;
+  //   this.setState({
+  //     currentValue: currentBoard[boxNumber],
+  //     boxIsFilled: currentBoard[boxNumber] !== "",
+  //   });
+  // }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   //console.log(this.props.boxNumber, this.state.currentValue, prevState.currentValue)
+  //   // Typical usage (don't forget to compare props):
+  //   if (this.state.currentValue !== prevState.currentValue) {
+  //     this.setState({currentValue: this.props.currentBoard[this.props.boxNumber]});
+  //   }
+  // }
   //Llega el valor del currentPlayer por props y lo renderizo en la casilla
   //creando un estado y modificandolo en el onClick.
   //Devuelvo la jugada por callback con el valor del jugador y el numero del casillero.
   render() {
-    const { boxNumber, currentPlayer, gameIsEnded } = this.props;
-   
+    const { boxNumber, currentPlayer, gameIsEnded, currentBoard } = this.props;
     return (
       <Button
-        disabled={this.state.boxIsFilled || gameIsEnded}
+        disabled={ currentBoard[boxNumber] !== "" || gameIsEnded}
         onClick={() => this.handleClick(currentPlayer, boxNumber)}
         variant="primary"
         size="lg"
         className="button"
       >
-        {this.state.move.player}
+        {/*{this.state.currentValue}*/}
+        {currentBoard[boxNumber]}
       </Button>
     );
   }

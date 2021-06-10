@@ -13,7 +13,7 @@ class Board extends React.Component {
 
   //Se manda en currentPlayer a Row. 
   render() {
-    const { gameIsEnded, currentPlayer } = this.props;
+    const { gameIsEnded, currentPlayer, currentBoard } = this.props;
 
     return (
       <div className="rowsContainer">
@@ -23,6 +23,7 @@ class Board extends React.Component {
             currentPlayer={currentPlayer}
             handleCallback={(move) => this.handleCallback(move)}
             gameIsEnded={gameIsEnded}
+            currentBoard={currentBoard}
           />
         </div>
         <div className="rowContainer">
@@ -31,6 +32,7 @@ class Board extends React.Component {
             currentPlayer={this.props.currentPlayer}
             handleCallback={(move) => this.handleCallback(move)}
             gameIsEnded={gameIsEnded}
+            currentBoard={currentBoard}
           />
         </div>
         <div className="rowContainer">
@@ -39,6 +41,7 @@ class Board extends React.Component {
             currentPlayer={this.props.currentPlayer}
             handleCallback={(move) => this.handleCallback(move)}
             gameIsEnded={gameIsEnded}
+            currentBoard={currentBoard}
           />
         </div>
       </div>

@@ -7,7 +7,6 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
 
-    //El estado inicial tiene de atributos al jugador que tiene el turno, las jugadas, el tablero vacio y el ganador.
     this.state = {
       //turno del jugador
       currentPlayer: "X",
@@ -18,39 +17,50 @@ class Game extends React.Component {
       //flag para determinar si termino el juego
       gameIsEnded: false,
       //historial de jugadas(array de boards)
-      history: []
+      history: [],
     };
   }
 
   //Llega la jugada por Callback desde Board.
   handleCallback(move) {
-    const { plays, board, winner, history } = this.state;
+    const { board, winner, history } = this.state;
+    
     const lastPlayer = move.player; //jugador
-    const lastValue = move.position; //posicion
+    const lastPosition = move.position; //posicion
 
     //llenar la jugada reciente en el tablero.
-    const newBoard = board;
+    const newBoard = [...board];
     //coloca en la posicion del tablero el value del jugador.
-    newBoard[lastValue] = lastPlayer;
+    newBoard[lastPosition] = lastPlayer;
 
     //Actualiza el board y agrega el board al historial.
-    this.setState({ board: newBoard, history: [...history, newBoard] });
+    const newHistory = [...history];
+    newHistory.push(newBoard);
+
+    
+    const lastPlayerWon = this.calculateWinner(newBoard)
+
+    //this.setState({ board: newBoard, history: newHistory }, this.calculateWinner(lastPlayer));
 
     //compara y setea ganador.
-    this.calculateWinner(board, lastPlayer, winner);
-    //si el tablero esta lleno determina empate.
-    this.checkTie();
+    //this.calculateWinner(lastPlayer);
 
-    //cambia el jugador.
-    if (lastPlayer === "X") {
-      this.setState({ currentPlayer: "O" });
-    } else {
-      this.setState({ currentPlayer: "X" });
-    }
+    //si el tablero esta lleno determina empate.
+    const isBoardFull = this.checkIsBoardFull(newBoard);
+
+
+    this.setState({
+      board: newBoard,
+      history: newHistory,
+      winner: lastPlayerWon ? lastPlayer : "",
+      gameIsEnded: lastPlayerWon || isBoardFull,
+      currentPlayer: lastPlayer === "X" ? "O" : "X"
+    })
+
   }
 
-  calculateWinner(board, lastPlayer, winner) {
-    if (
+  calculateWinner(board) {
+    return (
       (board[0] == "X" && board[1] == "X" && board[2] == "X") || //primera fila
       (board[0] == "O" && board[1] == "O" && board[2] == "O") ||
       (board[3] == "X" && board[4] == "X" && board[5] == "X") || //segunda fila
@@ -67,19 +77,12 @@ class Game extends React.Component {
       (board[2] == "O" && board[4] == "O" && board[6] == "O") ||
       (board[0] == "X" && board[4] == "X" && board[8] == "X") || //diagonal
       (board[0] == "O" && board[4] == "O" && board[8] == "O")
-    ) {
-      //Si hubo ganador se setea el ganador y termina el juego.
-      this.setState({ winner: lastPlayer, gameIsEnded: true });
-    }
+    )  
   }
 
-  checkTie() {
-    const { board, gameIsEnded } = this.state;
-
+  checkIsBoardFull(board) {
     const boxHasValue = (currentValue) => currentValue != "";
-    if (board.every(boxHasValue) && !gameIsEnded) {
-      this.setState({ winner: "", gameIsEnded: true });
-    }
+    return (board.every(boxHasValue))
   }
 
   //Recarga la pagina con el boton comenzar nuevo juego.
@@ -87,9 +90,19 @@ class Game extends React.Component {
     window.location.reload();
   }
 
+  handleHistory(i) {
+    const boardFromHistory = this.state.history[i];
+    const newHistory = [...this.state.history]
+    newHistory.length = i + 1;
+
+    this.setState({
+      board: boardFromHistory,
+      history: newHistory
+    });
+  }
+
   render() {
-    console.log(this.state.history)
-    const { winner, gameIsEnded, currentPlayer } = this.state;
+    const { winner, gameIsEnded, currentPlayer, board } = this.state;
 
     //conditional rendering para mostrar siguiente jugador, ganador o empate.
     let message;
@@ -104,21 +117,39 @@ class Game extends React.Component {
     //Se manda en currentPlayer a Board por props.
     return (
       <div className="gameContainer">
-        <Button onClick={this.refreshPage} variant="secondary"
-        size="sm" className="refreshButton">Comenzar nuevo juego</Button>
+        <Button
+          onClick={this.refreshPage}
+          variant="secondary"
+          size="sm"
+          className="refreshButton"
+        >
+          Comenzar nuevo juego
+        </Button>
         <Board
           currentPlayer={currentPlayer}
+          currentBoard={board}
           handleCallback={(lastPlayer) => this.handleCallback(lastPlayer)}
           gameIsEnded={gameIsEnded}
         />
         <div className="aside">
-        <div className="title">{message}</div>
-        <div className="historyContainer">
-        {this.state.history.map((element, i, arr) => {
-          return <Button variant="success"
-          size="sm" className="historyButton">#ir a jugada: {i}</Button>
-        })}
-        </div>
+          <div className="title">{message}</div>
+          <div className="historyContainer">
+            {this.state.history.map((element, i) => {
+              return (
+                <Button
+                  disabled={gameIsEnded}
+                  key={i}
+                  value={i}
+                  onClick={() => this.handleHistory(i)}
+                  variant="success"
+                  size="sm"
+                  className="historyButton"
+                >
+                  #ir a jugada: {i + 1}
+                </Button>
+              );
+            })}
+          </div>
         </div>
       </div>
     );
