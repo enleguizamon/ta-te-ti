@@ -3,15 +3,13 @@ import "./style.css";
 import Row from "../Row";
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  //Llega la jugada por Callback desde Row.
+  //Llega la jugada por Callback desde Row y se manda a Game.
   handleCallback(move) {
     this.props.handleCallback(move);
   }
 
-  //Se manda en currentPlayer a Row. 
+  //Se manda por props a Row el currentPlayer, currentBoard, gameIsEnded y se agrega
+  //row con el numero de fila. 
   render() {
     const { gameIsEnded, currentPlayer, currentBoard } = this.props;
 

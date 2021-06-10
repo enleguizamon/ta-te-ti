@@ -3,14 +3,16 @@ import "./style.css";
 import Box from "../Box";
 
 class Row extends React.Component {
-  //Llega la jugada por Callback desde Box.
+  //Llega la jugada por Callback desde Box y se manda a Board.
   handleCallback(move) {
     this.props.handleCallback(move);
   }
 
-  //Se manda en currentPlayer a Box.
+  //Se manda por props a Box el currentPlayer, currentBoard, gameIsEnded y se agrega
+  //el boxNumber que se calcula con row.
   render() {
     const { row, gameIsEnded, currentBoard } = this.props;
+
     return (
       <React.Fragment>
         <Box
