@@ -8,8 +8,8 @@ class Board extends React.Component {
     this.props.handleCallback(move);
   }
 
-  //Se manda por props a Row el currentPlayer, currentBoard, gameIsEnded y se agrega
-  //row con el numero de fila. 
+  //Se manda por props a Row el currentPlayer, currentBoard, gameIsEnded 
+  //y se agrega row con el numero de fila. 
   render() {
     const { gameIsEnded, currentPlayer, currentBoard } = this.props;
 

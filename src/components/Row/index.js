@@ -8,8 +8,8 @@ class Row extends React.Component {
     this.props.handleCallback(move);
   }
 
-  //Se manda por props a Box el currentPlayer, currentBoard, gameIsEnded y se agrega
-  //el boxNumber que se calcula con row.
+  //Se manda por props a Box el currentPlayer, currentBoard, gameIsEnded 
+  //y se agrega el boxNumber que se calcula con row.
   render() {
     const { row, gameIsEnded, currentBoard } = this.props;
 
